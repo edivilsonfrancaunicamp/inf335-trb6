@@ -16,6 +16,7 @@ public class App
     public static void main( String[] args )
     {
         execJDBCProcess();
+        execMongoDBProcess();
         System.out.println("process finished.");
     }
 
@@ -27,21 +28,21 @@ public class App
         Connection conn = JDBC.connectJDBC("userloja","INF335UNICAMP","jdbc:mysql://localhost/loja");
         try {
             if (conn != null) {
-                String productId = "5";
+                String productId = "6";
                 System.out.println("initial - get all products.");
                 jdbcClass.getAllProductsJDBC(conn);
                 System.out.println("inserting new product.");
                 jdbcClass.insertProductJDBC(conn,
                         productId,
-                        "Product Five",
+                        "Product Six",
                         "Default description of product",
-                        "550.0",
+                        "22.0",
                         "great product");
 
                 System.out.println("after insert - get all products.");
                 jdbcClass.getAllProductsJDBC(conn);
                 System.out.println("update new product.");
-                jdbcClass.updateProductPriceJDBC(conn, productId, "500.0");
+                jdbcClass.updateProductPriceJDBC(conn, productId, "120.0");
 
                 System.out.println("after update - get all products.");
                 jdbcClass.getAllProductsJDBC(conn);
@@ -65,29 +66,29 @@ public class App
         MongoDB mongoDBClass = new MongoDB();
 
         System.out.println("Open MongoDB connection");
-        MongoCollection<Document> dbCollection = MongoDB.connectMongoDB("loja", "produto", "mongodb://localhost");
+        MongoCollection<Document> dbCollection = MongoDB.connectMongoDB("loja", "produto", "mongodb://userloja:INF335UNICAMP@localhost:27017/admin");
         try {
             if (dbCollection != null) {
-                String productId = "1";
+                String productId = "4";
                 System.out.println("initial - get all products.");
                 mongoDBClass.getAllProductsMongoDB(dbCollection);
                 System.out.println("inserting new product.");
                 mongoDBClass.insertProductMongoDB(dbCollection,
                         productId,
-                        "Product One",
+                        "Product Four",
                         "Default description of product",
-                        "150.0",
+                        "10.0",
                         "great product");
 
                 System.out.println("after insert - get all products.");
                 mongoDBClass.getAllProductsMongoDB(dbCollection);
                 System.out.println("update new product.");
-                mongoDBClass.updateProductPriceMongoDB(dbCollection, productId, "300.0");
+                mongoDBClass.updateProductPriceMongoDB(dbCollection, productId, "40.0");
 
                 System.out.println("after update - get all products.");
                 mongoDBClass.getAllProductsMongoDB(dbCollection);
                 System.out.println("delete specific product.");
-                //jdbcClass.deleteProductJDBC(conn, productId);
+                mongoDBClass.deleteProductMongoDB(dbCollection, productId);
 
                 System.out.println("after delete - get all products.");
                 mongoDBClass.getAllProductsMongoDB(dbCollection);
